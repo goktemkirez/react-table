@@ -56,6 +56,7 @@
     "@mui/icons-material": "^5.15.17",
     "@mui/material": "^5.15.17",
     "dayjs": "^1.11.11",
-    "react-cookie": "^7.1.4"
+    "react-cookie": "^7.1.4",
+    "xlsx": "^0.18.5"
   }
 }
