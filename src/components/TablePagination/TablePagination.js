@@ -11,7 +11,7 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 
-import { convertTurkishCharsToEn } from "src/helpers/characterConvert";
+import { convertTurkishCharsToEn } from "../../helpers/characterConvert";
 
 // Pagination
 function TablePaginationActions(props) {

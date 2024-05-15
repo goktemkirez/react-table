@@ -1,4 +1,4 @@
-import { sortAsc } from "src/helpers/sorting";
+import { sortAsc } from "./sorting";
 
 export function areObjectsEqual(object1, object2) {
   return (

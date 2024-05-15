@@ -28,18 +28,19 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-import { getUniqueListByKey } from "src/helpers/helperFunctions";
-import { convertTurkishCharsToEn } from "src/helpers/characterConvert";
+import { getUniqueListByKey } from "../../helpers/helperFunctions";
+import { convertTurkishCharsToEn } from "../../helpers/characterConvert";
 import {
   areObjectArraysEqual,
   notExistInFirstArray,
   notExistInSecondArray,
-} from "src/helpers/compare";
-import { sortAsc, sortDesc } from "src/helpers/sorting";
-import AutoComplateFilter from "src/components/AutoComplateFilter";
-import IconButton from "src/components/IconButton";
-import TablePagination from "src/components/TablePagination";
-import Ribbon from "src/components/Ribbon";
+} from "../../helpers/compare";
+import { sortAsc, sortDesc } from "../../helpers/sorting";
+
+import AutoComplateFilter from "../AutoComplateFilter";
+import IconButton from "../IconButton";
+import TablePagination from "../TablePagination";
+import Ribbon from "../Ribbon";
 
 const datetimeColumnMinWidth = "200px";
 const sxFirstColumn = {

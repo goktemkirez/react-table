@@ -1,7 +1,7 @@
 import { Button, Grid, Typography, useTheme } from "@mui/material";
 import React from "react";
 
-import { downloadExcel } from "src/helpers/excel";
+import { downloadExcel } from "../../helpers/excel";
 
 function Ribbon({ title, data }) {
   const theme = useTheme();
