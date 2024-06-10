@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, Fragment } from "react";
+import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import { useCookies } from "react-cookie";
 import {
@@ -51,7 +52,11 @@ const sxFirstColumn = {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.transparentCompanySecondaryColor.main,
+    backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[700] : theme.palette.grey[400],
+    color: theme.palette.text.primary,
+  },
+  [`&.${tableCellClasses.footer}`]: {
+    backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[700] : theme.palette.grey[300],
     color: theme.palette.text.primary,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -62,12 +67,15 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.transparentCompanySecondaryColor.light,
+    backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[200],
   },
+  // "&.MuiTableRow-hover:hover": {
+  //   backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[400],
+  // },
   // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
+  // "&:last-child td, &:last-child th": {
+  //   border: 0,
+  // },
 }));
 
 const Table = ({
@@ -77,6 +85,7 @@ const Table = ({
   onEditButtonClick,
   onNewButtonClick,
   rowTooltip,
+  showFooter,
 }) => {
   const theme = useTheme();
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -104,7 +113,7 @@ const Table = ({
           .forEach((column) => {
             tempObj[column.name] = getUniqueListByKey(data, column.name).map(
               (x) => x[column.name]
-            );
+            ).sort();
           });
 
         setFilterValues(tempObj);
@@ -172,12 +181,18 @@ const Table = ({
               return (tempReturn = false);
           } else if (column.type === "date") {
             if (
-              filter[`${column.name}1`] !== "" &&
+              (filter[`${column.name}1`] !== null ||
+                filter[`${column.name}2`] !== null) &&
+              item[`${column.name}`] === null
+            )
+              return (tempReturn = false);
+            if (
+              filter[`${column.name}1`] !== null &&
               dayjs(filter[`${column.name}1`]) > dayjs(item[`${column.name}`])
             )
               return (tempReturn = false);
             if (
-              filter[`${column.name}2`] !== "" &&
+              filter[`${column.name}2`] !== null &&
               dayjs(filter[`${column.name}2`]).add(1, "day") <=
                 dayjs(item[`${column.name}`])
             )
@@ -402,7 +417,10 @@ const Table = ({
                     <StyledTableCell
                       key={index}
                       align="center"
-                      sx={{ minWidth: datetimeColumnMinWidth }}
+                      sx={{
+                        minWidth: datetimeColumnMinWidth,
+                        maxWidth: datetimeColumnMinWidth,
+                      }}
                     >
                       <Box
                         sx={{
@@ -520,7 +538,8 @@ const Table = ({
                 enterNextDelay={500}
                 leaveDelay={0}
                 title={
-                  rowTooltip && rowTooltip(row) && (
+                  rowTooltip &&
+                  rowTooltip(row) && (
                     <div style={{ whiteSpace: "pre-line" }}>
                       {rowTooltip(row)}
                     </div>
@@ -591,7 +610,30 @@ const Table = ({
             ))}
           </TableBody>
           <TableFooter>
-            <TableRow></TableRow>
+            {showFooter && (
+              <TableRow>
+                <StyledTableCell align="center"></StyledTableCell>
+                {orderedColums?.map((column, index) => (
+                  <>
+                    {column.type === "number" && (
+                      <StyledTableCell key={index} align="center">
+                        {filteredData
+                          ?.reduce((n, obj) => n + obj[column.name], 0)
+                          .toFixed(0)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      </StyledTableCell>
+                    )}
+                    {column.type !== "number" && (
+                      <StyledTableCell
+                        key={index}
+                        align="center"
+                      ></StyledTableCell>
+                    )}
+                  </>
+                ))}
+              </TableRow>
+            )}
           </TableFooter>
         </MuiTable>
       </TableContainer>
@@ -608,5 +650,24 @@ const Table = ({
     </Box>
   );
 };
+
+Table.propTypes = {
+  title: PropTypes.string,
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.exact({
+      name: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      type: PropTypes.oneOf(['string', 'number', 'date', 'bool']).isRequired,
+      component: PropTypes.func,
+    })
+  ).isRequired,
+  onEditButtonClick: PropTypes.func,
+  onNewButtonClick: PropTypes.func,
+  rowTooltip: PropTypes.func,
+  showFooter: PropTypes.bool,
+};
+
+PropTypes.checkPropTypes()
 
 export default Table;
