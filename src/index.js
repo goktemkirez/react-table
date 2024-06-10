@@ -10,5 +10,9 @@ export const TestComponent = ({ text }) => {
   return <div className={styles.test}>Test Component: {text}</div>
 }
 
+export const Tbl = ({ props }) => {
+  return <Table {...props} />
+}
+
 export default Table
 
