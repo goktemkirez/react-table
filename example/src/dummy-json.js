@@ -1,7 +1,7 @@
 const dummyJSON = [
     {
         "dummyId": 1,
-        "dummyText": "Proses Yazılım",
+        "dummyText": "Tester1",
         "dummyDate": "2024-05-15T12:58:33.387",
         "dummyNumber": 83,
         "dummyNumberWithDot": 83.95,
@@ -22,6 +22,18 @@ const dummyJSON = [
         "dummyUrl": "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
         "dummyArray": [1, 2, 3],
         "dummyObject": {"dummyProp1": 1, "dummyProp2": 2}
+    },
+    {
+        "dummyId": 3,
+        "dummyText": "Tester3",
+        "dummyDate": "2025-01-15T12:58:33.387",
+        "dummyNumber": 96,
+        "dummyNumberWithDot": 96.95,
+        "dummyBool": true,
+        "dummyBoolNumber": 1,
+        "dummyUrl": "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
+        "dummyArray": ["text1", "text2", "text3"],
+        "dummyObject": {"dummyProp1": "text1", "dummyProp2": "text2"}
     },
 ]
 

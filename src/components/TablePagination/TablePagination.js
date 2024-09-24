@@ -1,3 +1,4 @@
+import * as React from "react";
 import { styled } from "@mui/material/styles";
 import { TablePagination as MuiTablePagination, Box } from "@mui/material";
 import PropTypes from "prop-types";
@@ -8,10 +9,10 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 
 import { convertTurkishCharsToEn } from "../../helpers/characterConvert";
+import { cookies, setCookie } from "../../helpers/cookieManager";
 
 // Pagination
 function TablePaginationActions(props) {
@@ -97,15 +98,14 @@ function TablePagination({
   tableTitle,
 }) {
   const theme = useTheme();
-  const [cookies, setCookie, removeCookie] = useCookies();
   const upperMedium = useMediaQuery(theme.breakpoints.up("md"));
 
   const cookiePagination = parseInt(
-    cookies[
+    cookies(
       `${window.location.pathname}-(${convertTurkishCharsToEn(
         tableTitle
       )})-table-pagination`
-    ] || rowsPerPage
+    ) || rowsPerPage
   );
 
   useEffect(() => {

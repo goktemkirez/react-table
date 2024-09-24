@@ -14,7 +14,7 @@ export function convertTurkishCharsToEn(text) {
     ö: "o",
   };
   Object.keys(Maps).forEach(function (Old) {
-    text = text.replaceAll(Old, Maps[Old]);
+    text = text?.replaceAll(Old, Maps[Old]);
   });
   return text;
 }

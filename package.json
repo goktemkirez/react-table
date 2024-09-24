@@ -1,6 +1,6 @@
 {
   "name": "@goktemkirez/react-table",
-  "version": "1.2.3",
+  "version": "1.2.8",
   "description": "Custom React Table with MUI",
   "author": "goktemkirez",
   "license": "MIT",
@@ -24,7 +24,14 @@
     "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
-    "react": "^16.8.0"
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.17",
+    "@mui/material": "^5.15.17",
+    "@mui/x-date-pickers": "^7.4.0",
+    "dayjs": "^1.11.11",
+    "react": "^17.0.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -43,21 +50,11 @@
     "microbundle-crl": "^0.13.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
-    "react": "^16.8.0",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-scripts": "^3.4.1"
   },
   "files": [
     "dist"
-  ],
-  "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.17",
-    "@mui/material": "^5.15.17",
-    "@mui/x-date-pickers": "^7.4.0",
-    "dayjs": "^1.11.11",
-    "react-cookie": "^7.1.4",
-    "xlsx": "^0.18.5"
-  }
+  ]
 }

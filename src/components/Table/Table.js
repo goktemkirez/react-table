@@ -1,7 +1,10 @@
+import * as React from "react";
 import { useState, useEffect, useRef, Fragment } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
-import { useCookies } from "react-cookie";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import "dayjs/locale/tr";
 import {
   Table as MuiTable,
   TableFooter,
@@ -37,6 +40,7 @@ import {
   notExistInSecondArray,
 } from "../../helpers/compare";
 import { sortAsc, sortDesc } from "../../helpers/sorting";
+import { cookies, setCookie } from "../../helpers/cookieManager";
 
 import AutoComplateFilter from "../AutoComplateFilter";
 import IconButton from "../IconButton";
@@ -88,7 +92,6 @@ const Table = ({
   showFooter,
 }) => {
   const theme = useTheme();
-  const [cookies, setCookie, removeCookie] = useCookies();
   const upperSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const [filterValues, setFilterValues] = useState();
   const [filter, setFilter] = useState();
@@ -250,11 +253,11 @@ const Table = ({
   )})-table-column-order`;
 
   useEffect(() => {
-    if (!columns || !cookies[cookieName]) return;
+    if (!columns || !cookies(cookieName)) return;
 
     console.log("islem");
 
-    let columnsCookie = cookies[cookieName];
+    let columnsCookie = cookies(cookieName);
 
     // Cookie'de kayıtlı column listesi ve tablodaki column listesi aynıysa Cookie'den kayıtlı sıralamayı al
     if (areObjectArraysEqual(columnsCookie, columns, "name")) {
@@ -316,338 +319,340 @@ const Table = ({
   }
 
   return (
-    <Box sx={{ maxWidth: "100%" }}>
-      <Ribbon title={title} data={filteredData} />
-      <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
-        <MuiTable size="small">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center" sx={sxFirstColumn}>
-                {onNewButtonClick && (
-                  <IconButton
-                    title="Yeni"
-                    color="success"
-                    onClick={onNewButtonClick}
-                  >
-                    <AddBoxIcon />
-                  </IconButton>
-                )}
-              </StyledTableCell>
-              {orderedColums?.map((column, index) => (
-                <StyledTableCell
-                  key={index}
-                  align="center"
-                  draggable
-                  onDragStart={() => (dragRef.current = index)}
-                  onDragEnter={() => (dropRef.current = index)}
-                  onDrop={handleDrop}
-                  onDragOver={(e) => e.preventDefault()}
-                >
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    title="Sırala"
-                    sx={{ "&:hover": { cursor: "pointer" } }}
-                    onClick={() => sortByColumn(column.name)}
-                  >
-                    <Typography fontSize={14} fontWeight={600}>
-                      {column.title}
-                    </Typography>
-                    <Box display="flex" alignItems="center">
-                      {sortedAsc !== undefined &&
-                      sortedAsc[column.name] === true ? (
-                        <ArrowDownwardIcon
-                          fontSize="small"
-                          color="action"
-                          sx={{ ml: 1 }}
-                        />
-                      ) : sortedAsc !== undefined &&
-                        sortedAsc[column.name] === false ? (
-                        <ArrowUpwardIcon
-                          fontSize="small"
-                          color="action"
-                          sx={{ ml: 1 }}
-                        />
-                      ) : (
-                        <SortIcon
-                          fontSize="small"
-                          color="action"
-                          sx={{ ml: 1 }}
-                        />
-                      )}
-                    </Box>
-                  </Box>
-                </StyledTableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <StyledTableCell align="center" sx={sxFirstColumn}>
-                <IconButton
-                  title="Filtreleri temizle"
-                  color="info"
-                  onClick={handleFiltreTemizle}
-                >
-                  <FilterAltOffIcon />
-                </IconButton>
-              </StyledTableCell>
-              {orderedColums?.map((column, index) => (
-                <Fragment key={index}>
-                  {(column.type === "string" || column.type === "number") && (
-                    <StyledTableCell key={index} align="center">
-                      <AutoComplateFilter
-                        options={
-                          filterValues ? filterValues[`${column.name}`] : []
-                        }
-                        value={filter ? filter[column.name] : []}
-                        onChange={(event, newValue) => {
-                          setFilter({
-                            ...filter,
-                            [`${column.name}`]: newValue,
-                          });
-                        }}
-                        label=""
-                        sx={{ minWidth: 130 }}
-                      />
-                    </StyledTableCell>
-                  )}
-                  {column.type === "date" && (
-                    <StyledTableCell
-                      key={index}
-                      align="center"
-                      sx={{
-                        minWidth: datetimeColumnMinWidth,
-                        maxWidth: datetimeColumnMinWidth,
-                      }}
+    <LocalizationProvider adapterLocale="tr" dateAdapter={AdapterDayjs}>
+      <Box sx={{ maxWidth: "100%" }}>
+        <Ribbon title={title} data={filteredData} />
+        <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
+          <MuiTable size="small">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center" sx={sxFirstColumn}>
+                  {onNewButtonClick && (
+                    <IconButton
+                      title="Yeni"
+                      color="success"
+                      onClick={onNewButtonClick}
                     >
-                      <Box
-                        sx={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <DatePicker
-                          sx={{ width: "100%" }}
-                          label={"Min"}
-                          openTo="month"
-                          views={["year", "month", "day"]}
-                          value={
-                            filter
-                              ? filter[`${column.name}1`]
-                              : "" === ""
-                              ? null
-                              : dayjs(filter[`${column.name}1`])
+                      <AddBoxIcon />
+                    </IconButton>
+                  )}
+                </StyledTableCell>
+                {orderedColums?.map((column, index) => (
+                  <StyledTableCell
+                    key={index}
+                    align="center"
+                    draggable
+                    onDragStart={() => (dragRef.current = index)}
+                    onDragEnter={() => (dropRef.current = index)}
+                    onDrop={handleDrop}
+                    onDragOver={(e) => e.preventDefault()}
+                  >
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      title="Sırala"
+                      sx={{ "&:hover": { cursor: "pointer" } }}
+                      onClick={() => sortByColumn(column.name)}
+                    >
+                      <Typography fontSize={14} fontWeight={600}>
+                        {column.title}
+                      </Typography>
+                      <Box display="flex" alignItems="center">
+                        {sortedAsc !== undefined &&
+                        sortedAsc[column.name] === true ? (
+                          <ArrowDownwardIcon
+                            fontSize="small"
+                            color="action"
+                            sx={{ ml: 1 }}
+                          />
+                        ) : sortedAsc !== undefined &&
+                          sortedAsc[column.name] === false ? (
+                          <ArrowUpwardIcon
+                            fontSize="small"
+                            color="action"
+                            sx={{ ml: 1 }}
+                          />
+                        ) : (
+                          <SortIcon
+                            fontSize="small"
+                            color="action"
+                            sx={{ ml: 1 }}
+                          />
+                        )}
+                      </Box>
+                    </Box>
+                  </StyledTableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <StyledTableCell align="center" sx={sxFirstColumn}>
+                  <IconButton
+                    title="Filtreleri temizle"
+                    color="info"
+                    onClick={handleFiltreTemizle}
+                  >
+                    <FilterAltOffIcon />
+                  </IconButton>
+                </StyledTableCell>
+                {orderedColums?.map((column, index) => (
+                  <Fragment key={index}>
+                    {(column.type === "string" || column.type === "number") && (
+                      <StyledTableCell key={index} align="center">
+                        <AutoComplateFilter
+                          options={
+                            filterValues ? filterValues[`${column.name}`] : []
                           }
-                          onAccept={(value) =>
+                          value={filter ? filter[column.name] : []}
+                          onChange={(event, newValue) => {
                             setFilter({
                               ...filter,
-                              [`${column.name}1`]: dayjs(value?.["$d"]),
-                            })
-                          }
-                          onChange={(value) => {
-                            setFilter({
-                              ...filter,
-                              [`${column.name}1`]: dayjs(value?.["$d"]),
+                              [`${column.name}`]: newValue,
                             });
                           }}
-                          slotProps={{
-                            textField: { size: "small", disabled: true },
-                          }}
+                          label=""
+                          sx={{ minWidth: 130 }}
                         />
-                        -
-                        <DatePicker
-                          sx={{ width: "100%" }}
-                          label={"Max"}
-                          openTo="month"
-                          views={["year", "month", "day"]}
-                          value={
-                            filter
-                              ? filter[`${column.name}2`]
-                              : "" === ""
-                              ? null
-                              : dayjs(filter[`${column.name}2`])
-                          }
-                          onAccept={(value) =>
-                            setFilter({
-                              ...filter,
-                              [`${column.name}2`]: dayjs(value?.["$d"]),
-                            })
-                          }
-                          onChange={(value) =>
-                            setFilter({
-                              ...filter,
-                              [`${column.name}2`]: dayjs(value?.["$d"]),
-                            })
-                          }
-                          slotProps={{
-                            textField: { size: "small", disabled: true },
-                          }}
-                        />
-                      </Box>
-                    </StyledTableCell>
-                  )}
-                  {column.type === "bool" && (
-                    <StyledTableCell key={index} align="center">
-                      <FormControlLabel
-                        sx={{ m: 0 }}
-                        control={
-                          <Checkbox
-                            checked={filter?.[column.name] === true}
-                            indeterminate={filter?.[column.name] === false}
-                            onChange={(e) => {
-                              if (filter[`${column.name}`] === null)
-                                setFilter({
-                                  ...filter,
-                                  [`${column.name}`]: true,
-                                });
-                              else if (filter[`${column.name}`] === true)
-                                setFilter({
-                                  ...filter,
-                                  [`${column.name}`]: false,
-                                });
-                              else
-                                setFilter({
-                                  ...filter,
-                                  [`${column.name}`]: null,
-                                });
-                            }}
-                          />
-                        }
-                      />
-                    </StyledTableCell>
-                  )}
-                </Fragment>
-              ))}
-            </TableRow>
-            {(rowsPerPage > 0
-              ? filteredData?.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : filteredData
-            )?.map((row, index) => (
-              <Tooltip
-                key={index}
-                arrow
-                followCursor
-                enterDelay={500}
-                enterNextDelay={500}
-                leaveDelay={0}
-                title={
-                  rowTooltip &&
-                  rowTooltip(row) && (
-                    <div style={{ whiteSpace: "pre-line" }}>
-                      {rowTooltip(row)}
-                    </div>
-                  )
-                }
-              >
-                <StyledTableRow>
-                  <StyledTableCell align="center" sx={sxFirstColumn}>
-                    {onEditButtonClick && (
-                      <IconButton
-                        title="Detay"
-                        color="warning"
-                        onClick={() => onEditButtonClick(row)}
-                      >
-                        <DriveFileRenameOutlineIcon />
-                      </IconButton>
-                    )}
-                  </StyledTableCell>
-                  {orderedColums?.map((column, index) => (
-                    <Fragment key={index}>
-                      {column.component ? (
-                        <StyledTableCell
-                          key={index}
-                          align="center"
-                          sx={{ minHeight: "100%" }}
-                        >
-                          <Box height="100%">
-                            {column.component(row[column.name], row)}
-                          </Box>
-                        </StyledTableCell>
-                      ) : (
-                        <>
-                          {(column.type === "string" ||
-                            column.type === "number") && (
-                            <StyledTableCell key={index} align="center">
-                              {row[column.name]}
-                            </StyledTableCell>
-                          )}
-                          {column.type === "date" && (
-                            <StyledTableCell
-                              key={index}
-                              align="center"
-                              sx={{ minWidth: datetimeColumnMinWidth }}
-                            >
-                              {row[column.name] !== null
-                                ? new Date(
-                                    row[column.name]
-                                  )?.toLocaleDateString()
-                                : null}
-                            </StyledTableCell>
-                          )}
-                          {column.type === "bool" && (
-                            <StyledTableCell key={index} align="center">
-                              {row[column.name] && (
-                                <CheckCircleIcon
-                                  color="success"
-                                  fontSize="small"
-                                />
-                              )}
-                            </StyledTableCell>
-                          )}
-                        </>
-                      )}
-                    </Fragment>
-                  ))}
-                </StyledTableRow>
-              </Tooltip>
-            ))}
-          </TableBody>
-          <TableFooter>
-            {showFooter && (
-              <TableRow>
-                <StyledTableCell align="center"></StyledTableCell>
-                {orderedColums?.map((column, index) => (
-                  <>
-                    {column.type === "number" && (
-                      <StyledTableCell key={index} align="center">
-                        {filteredData
-                          ?.reduce((n, obj) => n + obj[column.name], 0)
-                          .toFixed(0)
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </StyledTableCell>
                     )}
-                    {column.type !== "number" && (
+                    {column.type === "date" && (
                       <StyledTableCell
                         key={index}
                         align="center"
-                      ></StyledTableCell>
+                        sx={{
+                          minWidth: datetimeColumnMinWidth,
+                          maxWidth: datetimeColumnMinWidth,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <DatePicker
+                            sx={{ width: "100%" }}
+                            label={"Min"}
+                            openTo="month"
+                            views={["year", "month", "day"]}
+                            value={
+                              filter
+                                ? filter[`${column.name}1`]
+                                : "" === ""
+                                ? null
+                                : dayjs(filter[`${column.name}1`])
+                            }
+                            onAccept={(value) =>
+                              setFilter({
+                                ...filter,
+                                [`${column.name}1`]: dayjs(value?.["$d"]),
+                              })
+                            }
+                            onChange={(value) => {
+                              setFilter({
+                                ...filter,
+                                [`${column.name}1`]: dayjs(value?.["$d"]),
+                              });
+                            }}
+                            slotProps={{
+                              textField: { size: "small", disabled: true },
+                            }}
+                          />
+                          -
+                          <DatePicker
+                            sx={{ width: "100%" }}
+                            label={"Max"}
+                            openTo="month"
+                            views={["year", "month", "day"]}
+                            value={
+                              filter
+                                ? filter[`${column.name}2`]
+                                : "" === ""
+                                ? null
+                                : dayjs(filter[`${column.name}2`])
+                            }
+                            onAccept={(value) =>
+                              setFilter({
+                                ...filter,
+                                [`${column.name}2`]: dayjs(value?.["$d"]),
+                              })
+                            }
+                            onChange={(value) =>
+                              setFilter({
+                                ...filter,
+                                [`${column.name}2`]: dayjs(value?.["$d"]),
+                              })
+                            }
+                            slotProps={{
+                              textField: { size: "small", disabled: true },
+                            }}
+                          />
+                        </Box>
+                      </StyledTableCell>
                     )}
-                  </>
+                    {column.type === "bool" && (
+                      <StyledTableCell key={index} align="center">
+                        <FormControlLabel
+                          sx={{ m: 0 }}
+                          control={
+                            <Checkbox
+                              checked={filter?.[column.name] === true}
+                              indeterminate={filter?.[column.name] === false}
+                              onChange={(e) => {
+                                if (filter[`${column.name}`] === null)
+                                  setFilter({
+                                    ...filter,
+                                    [`${column.name}`]: true,
+                                  });
+                                else if (filter[`${column.name}`] === true)
+                                  setFilter({
+                                    ...filter,
+                                    [`${column.name}`]: false,
+                                  });
+                                else
+                                  setFilter({
+                                    ...filter,
+                                    [`${column.name}`]: null,
+                                  });
+                              }}
+                            />
+                          }
+                        />
+                      </StyledTableCell>
+                    )}
+                  </Fragment>
                 ))}
               </TableRow>
-            )}
-          </TableFooter>
-        </MuiTable>
-      </TableContainer>
-      <>
-        <TablePagination
-          count={filteredData?.length}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          page={page}
-          setPage={setPage}
-          tableTitle={title}
-        />
-      </>
-    </Box>
+              {(rowsPerPage > 0
+                ? filteredData?.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : filteredData
+              )?.map((row, index) => (
+                <Tooltip
+                  key={index}
+                  arrow
+                  followCursor
+                  enterDelay={500}
+                  enterNextDelay={500}
+                  leaveDelay={0}
+                  title={
+                    rowTooltip &&
+                    rowTooltip(row) && (
+                      <div style={{ whiteSpace: "pre-line" }}>
+                        {rowTooltip(row)}
+                      </div>
+                    )
+                  }
+                >
+                  <StyledTableRow>
+                    <StyledTableCell align="center" sx={sxFirstColumn}>
+                      {onEditButtonClick && (
+                        <IconButton
+                          title="Detay"
+                          color="warning"
+                          onClick={() => onEditButtonClick(row)}
+                        >
+                          <DriveFileRenameOutlineIcon />
+                        </IconButton>
+                      )}
+                    </StyledTableCell>
+                    {orderedColums?.map((column, index) => (
+                      <Fragment key={index}>
+                        {column.component ? (
+                          <StyledTableCell
+                            key={index}
+                            align="center"
+                            sx={{ minHeight: "100%" }}
+                          >
+                            <Box height="100%">
+                              {column.component(row[column.name], row)}
+                            </Box>
+                          </StyledTableCell>
+                        ) : (
+                          <>
+                            {(column.type === "string" ||
+                              column.type === "number") && (
+                              <StyledTableCell key={index} align="center">
+                                {row[column.name]}
+                              </StyledTableCell>
+                            )}
+                            {column.type === "date" && (
+                              <StyledTableCell
+                                key={index}
+                                align="center"
+                                sx={{ minWidth: datetimeColumnMinWidth }}
+                              >
+                                {row[column.name] !== null
+                                  ? new Date(
+                                      row[column.name]
+                                    )?.toLocaleDateString()
+                                  : null}
+                              </StyledTableCell>
+                            )}
+                            {column.type === "bool" && (
+                              <StyledTableCell key={index} align="center">
+                                {row[column.name] && (
+                                  <CheckCircleIcon
+                                    color="success"
+                                    fontSize="small"
+                                  />
+                                )}
+                              </StyledTableCell>
+                            )}
+                          </>
+                        )}
+                      </Fragment>
+                    ))}
+                  </StyledTableRow>
+                </Tooltip>
+              ))}
+            </TableBody>
+            <TableFooter>
+              {showFooter && (
+                <TableRow>
+                  <StyledTableCell align="center"></StyledTableCell>
+                  {orderedColums?.map((column, index) => (
+                    <>
+                      {column.type === "number" && (
+                        <StyledTableCell key={index} align="center">
+                          {filteredData
+                            ?.reduce((n, obj) => n + obj[column.name], 0)
+                            .toFixed(0)
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </StyledTableCell>
+                      )}
+                      {column.type !== "number" && (
+                        <StyledTableCell
+                          key={index}
+                          align="center"
+                        ></StyledTableCell>
+                      )}
+                    </>
+                  ))}
+                </TableRow>
+              )}
+            </TableFooter>
+          </MuiTable>
+        </TableContainer>
+        <>
+          <TablePagination
+            count={filteredData?.length}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            page={page}
+            setPage={setPage}
+            tableTitle={title}
+          />
+        </>
+      </Box>
+    </LocalizationProvider>
   );
 };
 
