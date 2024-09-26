@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import '@goktemkirez/react-table/dist/index.css'
-import Table, { ExampleComponent } from '@goktemkirez/react-table'
+import Table from '@goktemkirez/react-table'
 
 // import dummyJSON from './dummy-json'
 
@@ -15,8 +15,8 @@ const App = () => {
 
   return (
     <>
-      <ExampleComponent text='Create React Library Example 😄' />
       <Table
+        language="en"
         title='Test Table'
         data={data}
         columns={[
@@ -51,20 +51,16 @@ const App = () => {
             type: 'bool'
           },
           {
-            name: 'dummyBool',
-            title: 'dummyBool with component',
-            type: 'bool',
-            component: (value, row) => (<div>{value} or {row.dummyBool}</div>) // you can add custom component to column
-          },
-          {
             name: 'dummyBoolNumber',
-            title: 'dummyBoolNumber',
-            type: 'bool'
+            title: 'column with component',
+            type: 'number',
+            component: (value, row) => (<div style={{backgroundColor: "red"}}>{value} or {row.dummyBoolNumber}</div>) // you can add custom component to column
           },
           {
             name: 'dummyUrl',
             title: 'dummyUrl',
-            type: 'string'
+            type: 'string',
+            component: (value, row) => (<a href={value} target='_blank'>{value}</a>)
           }
         ]}
         onNewButtonClick={() => {

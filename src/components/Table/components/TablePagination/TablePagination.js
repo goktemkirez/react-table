@@ -12,6 +12,8 @@ import LastPageIcon from '@mui/icons-material/LastPage'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 
+import { useTranslation } from '../../../../contexts/TranslationContext'
+
 import { convertTurkishCharsToEn } from '../../helpers/characterConvert'
 
 // Pagination
@@ -97,6 +99,7 @@ function TablePagination({
   setPage,
   tableTitle
 }) {
+  const { translation } = useTranslation();
   const [cookies, setCookie, removeCookie] = useCookies()
   const theme = useTheme()
   const upperMedium = useMediaQuery(theme.breakpoints.up('md'))
@@ -130,7 +133,7 @@ function TablePagination({
 
   return (
     <CustomTablePagination
-      rowsPerPageOptions={[5, 10, 15, 25, 50, { label: 'Tümü', value: -1 }]}
+      rowsPerPageOptions={[5, 10, 15, 25, 50, { label: translation.all, value: -1 }]}
       colSpan={3}
       count={count}
       rowsPerPage={cookiePagination || rowsPerPage}
@@ -151,7 +154,7 @@ function TablePagination({
       labelDisplayedRows={({ from, to, count }) => {
         return `${
           count !== -1 ? count : `more than ${to}`
-        } kayıtta ${from}–${to} arası gösteriliyor.`
+        } ${translation.records}, ${from}–${to} ${translation.showingBetween}.`
       }}
       sx={
         upperMedium

@@ -1,9 +1,12 @@
 import { Button, Grid, Typography, useTheme } from "@mui/material";
 import React from "react";
 
+import { useTranslation } from "../../../../contexts/TranslationContext";
+
 import { downloadExcel } from "../../helpers/excel";
 
 function Ribbon({ title, data }) {
+  const { translation } = useTranslation();
   const theme = useTheme();
 
   return (
@@ -27,7 +30,7 @@ function Ribbon({ title, data }) {
             color="success"
             onClick={() => downloadExcel(data)}
           >
-            Excel Export
+            {translation.excelExport}
           </Button>
         )}
       </Grid>

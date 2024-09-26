@@ -28,7 +28,7 @@ const App = () => {
   
   return (
     <Table
-        language="en"
+        language="en" // tr(Turkish), en(English), pl(Polish), es(Spanish) are supported. Default language is tr(Turkish)
         title='Dummy Table'
         data={data}
         columns={[
@@ -63,20 +63,16 @@ const App = () => {
             type: 'bool'
           },
           {
-            name: 'dummyBool',
-            title: 'dummyBool with component',
-            type: 'bool',
-            component: (value, row) => (<div>{value} or {row.dummyBool}</div>) // you can add custom component to column
-          },
-          {
             name: 'dummyBoolNumber',
-            title: 'dummyBoolNumber',
-            type: 'bool'
+            title: 'column with component',
+            type: 'number',
+            component: (value, row) => (<div>{value} or {row.dummyBoolNumber}</div>) // you can add custom component to column
           },
           {
             name: 'dummyUrl',
             title: 'dummyUrl',
-            type: 'string'
+            type: 'string',
+            component: (value, row) => (<a href={value} target='_blank'>{value}</a>)
           }
         ]} 
         onNewButtonClick={() => {

@@ -30,6 +30,8 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useCookies } from 'react-cookie'
 
+import { useTranslation } from '../../contexts/TranslationContext'
+
 import { getUniqueListByKey } from './helpers/helperFunctions'
 import { convertTurkishCharsToEn } from './helpers/characterConvert'
 import {
@@ -112,6 +114,7 @@ function filterObjects(array, searchTerm) {
 /**
  * Table component
  * @param {object} props
+ * @param {string} props.language - The language of areas such as search, excel export, datepicker in table (tr, en, es, pl...)
  * @param {string} props.title - title of table
  * @param {array} props.data - data source of table, an object array
  * @param {array} props.columns - object array of columns. example: [{name: 'id', title: 'User ID', type: 'string', component: (value, row) => (<div>{value} or {row.id}</div>)}]
@@ -130,6 +133,7 @@ const Table = ({
   rowTooltip,
   showFooter
 }) => {
+  const { translation } = useTranslation();
   const theme = useTheme()
   const [cookies, setCookie, removeCookie] = useCookies()
   const upperSmall = useMediaQuery(theme.breakpoints.up('sm'))
@@ -378,7 +382,7 @@ const Table = ({
               <StyledTableCell align='center' sx={sxFirstColumn}>
                 {onNewButtonClick && (
                   <IconButton
-                    title='Yeni'
+                    title={translation.new}
                     color='success'
                     onClick={onNewButtonClick}
                   >
@@ -400,7 +404,7 @@ const Table = ({
                     display='flex'
                     alignItems='center'
                     justifyContent='center'
-                    title='Sırala'
+                    title={translation.sort}
                     sx={{ '&:hover': { cursor: 'pointer' } }}
                     onClick={() => sortByColumn(column.name)}
                   >
@@ -439,7 +443,7 @@ const Table = ({
             <StyledTableRow>
               <StyledTableCell align='center' sx={sxFirstColumn}>
                 <IconButton
-                  title='Filtreleri temizle'
+                  title={translation.clearFilters}
                   color='info'
                   onClick={handleFiltreTemizle}
                 >
@@ -603,7 +607,7 @@ const Table = ({
                   <StyledTableCell align='center' sx={sxFirstColumn}>
                     {onEditButtonClick && (
                       <IconButton
-                        title='Detay'
+                        title={translation.detail}
                         color='warning'
                         onClick={() => onEditButtonClick(row)}
                       >

@@ -4,12 +4,6 @@ import PropTypes from 'prop-types'
 import { default as TableComponent } from './components/Table'
 import TableWrapper from './components/TableWrapper'
 
-import styles from './styles.module.css'
-
-export const ExampleComponent = ({ text }) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
-
 /**
  * Table component
  * @param {object} props

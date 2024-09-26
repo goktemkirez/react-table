@@ -8,13 +8,16 @@ import "dayjs/locale/pl";
 import { ThemeProvider } from '@mui/material';
 
 import { light } from '../../theme';
+import { TranslationProvider } from '../../contexts/TranslationContext';
 
 function TableWrapper({children, language="tr"}) {
   return (
     <ThemeProvider theme={light}>
-      <LocalizationProvider adapterLocale={language} dateAdapter={AdapterDayjs}>
-        {children}
-      </LocalizationProvider>
+      <TranslationProvider lang={language}>
+        <LocalizationProvider adapterLocale={language} dateAdapter={AdapterDayjs}>
+          {children}
+        </LocalizationProvider>
+      </TranslationProvider>
     </ThemeProvider>
   )
 }
