@@ -60,7 +60,7 @@ const App = () => {
             name: 'dummyUrl',
             title: 'dummyUrl',
             type: 'string',
-            component: (value, row) => (<a href={value} target='_blank'>{value}</a>)
+            component: (value, row) => (<a href={value} target='_blank' rel="noopener noreferrer">{value}</a>)
           }
         ]}
         onNewButtonClick={() => {

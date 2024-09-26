@@ -47,6 +47,8 @@ import TablePagination from './components/TablePagination'
 import Ribbon from './components/Ribbon'
 import SearchInTable from './components/SearchInTable'
 
+import "./Table.css"
+
 const datetimeColumnMinWidth = '200px'
 const sxFirstColumn = {
   m: 0,
@@ -373,7 +375,7 @@ const Table = ({
       <TableContainer
         component={Paper}
         sx={{
-          maxWidth: '100%'
+          maxWidth: '100%',
         }}
       >
         <MuiTable size='small' sx={{ borderCollapse: 'separate' }}>
