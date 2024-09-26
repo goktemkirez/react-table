@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import '@goktemkirez/react-table/dist/index.css'
-import Table, { ExampleComponent, Tbl } from '@goktemkirez/react-table'
+import Table, { ExampleComponent } from '@goktemkirez/react-table'
 
-import dummyJSON from './dummy-json'
+// import dummyJSON from './dummy-json'
 
 const App = () => {
   const [data, setData] = useState([])
@@ -51,6 +51,12 @@ const App = () => {
             type: 'bool'
           },
           {
+            name: 'dummyBool',
+            title: 'dummyBool with component',
+            type: 'bool',
+            component: (value, row) => (<div>{value} or {row.dummyBool}</div>) // you can add custom component to column
+          },
+          {
             name: 'dummyBoolNumber',
             title: 'dummyBoolNumber',
             type: 'bool'
@@ -61,6 +67,16 @@ const App = () => {
             type: 'string'
           }
         ]}
+        onNewButtonClick={() => {
+          alert("New button clicked")
+        }}
+        onEditButtonClick={(row) => {
+          alert(`ID: ${row.dummyId} row edit clicked`)
+        }}
+        rowTooltip={(row) => {
+            return row.dummyBool && "dummyBool is true";
+        }}
+        showFooter={true}
       />
     </>
   )
