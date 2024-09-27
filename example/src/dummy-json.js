@@ -1,7 +1,7 @@
 const dummyJSON = [
     {
         "dummyId": 1,
-        "dummyText": "Tester1",
+        "dummyText": "",
         "dummyDate": "2024-05-15T12:58:33.387",
         "dummyNumber": 83,
         "dummyNumberWithDot": 83.95,

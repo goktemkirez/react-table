@@ -5,7 +5,9 @@ export const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 // Object Array den Value ya göre tekrar eden satırları kaldırma
 
 export function getUniqueListByKey(arr, key) {
-  return [...new Map(arr.map(item => [item[key], item])).values()]
+  const stringArray = arr.map(item => item[key])
+  const uniqueStrings = Array.from(new Set(stringArray)); 
+  return uniqueStrings
 }
 
 // Gün Ekleme

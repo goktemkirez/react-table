@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import '@goktemkirez/react-table/dist/index.css'
 import Table from '@goktemkirez/react-table'
 
-// import dummyJSON from './dummy-json'
+import dummyJSON from './dummy-json'
 
 const App = () => {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    fetch('https://dummyjson.com/c/3b32-4630-419c-9426')
-      .then((res) => res.json())
-      .then((res) => setData(res))
+    // fetch('https://dummyjson.com/c/3b32-4630-419c-9426')
+    //   .then((res) => res.json())
+    //   .then((res) => setData(res))
+    setData(dummyJSON)
   }, [])
 
   return (

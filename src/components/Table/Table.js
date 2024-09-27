@@ -161,11 +161,9 @@ const Table = ({
         columns
           .filter((x) => x.type === 'string' || x.type === 'number')
           .forEach((column) => {
-            tempObj[column.name] = getUniqueListByKey(data, column.name)
-              .map((x) => x[column.name])
-              .sort()
+            tempObj[column.name] = getUniqueListByKey(data, column.name).sort()
           })
-
+          
         setFilterValues(tempObj)
 
         // Sorting doldur
