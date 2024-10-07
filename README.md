@@ -66,13 +66,21 @@ const App = () => {
             name: 'dummyBoolNumber',
             title: 'column with component',
             type: 'number',
-            component: (value, row) => (<div>{value} or {row.dummyBoolNumber}</div>) // you can add custom component to column
+            component: (value, row) => (
+              <div style={{ backgroundColor: 'red', height: '100%' }}>
+                {value} or {row.dummyBoolNumber}
+              </div>
+            ) // you can add custom component to column
           },
           {
             name: 'dummyUrl',
             title: 'dummyUrl',
             type: 'string',
-            component: (value, row) => (<a href={value} target='_blank'>{value}</a>)
+            component: (value, row) => (
+              <a href={value} target='_blank' rel='noopener noreferrer'>
+                {value}
+              </a>
+            )
           }
         ]} 
         onNewButtonClick={() => {

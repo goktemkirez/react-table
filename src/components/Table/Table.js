@@ -373,7 +373,7 @@ const Table = ({
       <TableContainer
         component={Paper}
         sx={{
-          maxWidth: '100%',
+          maxWidth: '100%'
         }}
       >
         <MuiTable size='small' sx={{ borderCollapse: 'separate' }}>
@@ -621,11 +621,20 @@ const Table = ({
                         <StyledTableCell
                           key={index}
                           align='center'
-                          sx={{ minHeight: '100%' }}
+                          sx={{
+                            height: 0,
+                            backgroundColor:
+                              generalFilter &&
+                              row[column.name]
+                                ?.toString()
+                                ?.toLowerCase()
+                                ?.includes(generalFilter.toLowerCase()) &&
+                              (theme.palette.mode === 'dark'
+                                ? '#e0bc00'
+                                : '#FFFF40')
+                          }}
                         >
-                          <Box height='100%'>
-                            {column.component(row[column.name], row)}
-                          </Box>
+                          {column.component(row[column.name], row)}
                         </StyledTableCell>
                       ) : (
                         <>

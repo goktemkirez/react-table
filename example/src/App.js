@@ -16,7 +16,7 @@ const App = () => {
   return (
     <>
       <Table
-        language="en"
+        language='en'
         title='Test Table'
         data={data}
         columns={[
@@ -54,23 +54,31 @@ const App = () => {
             name: 'dummyBoolNumber',
             title: 'column with component',
             type: 'number',
-            component: (value, row) => (<div style={{backgroundColor: "red"}}>{value} or {row.dummyBoolNumber}</div>) // you can add custom component to column
+            component: (value, row) => (
+              <div style={{ backgroundColor: 'red', height: '100%' }}>
+                {value} or {row.dummyBoolNumber}
+              </div>
+            ) // you can add custom component to column
           },
           {
             name: 'dummyUrl',
             title: 'dummyUrl',
             type: 'string',
-            component: (value, row) => (<a href={value} target='_blank' rel="noopener noreferrer">{value}</a>)
+            component: (value, row) => (
+              <a href={value} target='_blank' rel='noopener noreferrer'>
+                {value}
+              </a>
+            )
           }
         ]}
         onNewButtonClick={() => {
-          alert("New button clicked")
+          alert('New button clicked')
         }}
         onEditButtonClick={(row) => {
           alert(`ID: ${row.dummyId} row edit clicked`)
         }}
         rowTooltip={(row) => {
-            return row.dummyBool && "dummyBool is true";
+          return row.dummyBool && 'dummyBool is true'
         }}
         showFooter={true}
       />
