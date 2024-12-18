@@ -3,6 +3,7 @@
 > React Table with MUI
 
 [![NPM](https://img.shields.io/npm/v/@goktemkirez/react-table.svg)](https://www.npmjs.com/package/@goktemkirez/react-table) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![npm downloads](https://img.shields.io/npm/dt/@goktemkirez/react-table.svg)](https://www.npmjs.com/package/@goktemkirez/react-table)
 
 ## Install
 
