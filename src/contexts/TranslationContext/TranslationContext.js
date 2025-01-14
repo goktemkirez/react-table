@@ -10,8 +10,8 @@ const translations = {
     pl: 'eksport do programu Excel'
   },
   searchInTable: {
-    tr: 'Tabloda Ara...',
-    en: 'Search in Table...',
+    tr: 'Tabloda Ara',
+    en: 'Search in Table',
     es: 'Buscar en la tabla',
     pl: 'Szukaj w tabeli'
   },
@@ -56,6 +56,12 @@ const translations = {
     en: 'showing',
     es: 'mostrando',
     pl: 'pokazuje'
+  },
+  notFound: {
+    tr: 'Bulunamadı.',
+    en: 'Not found.',
+    es: 'mostrando',
+    pl: 'Extraviado.'
   }
 }
 
@@ -69,7 +75,8 @@ export const TranslationProvider = ({ children, lang }) => {
     detail: translations.detail[lang],
     all: translations.all[lang],
     records: translations.records[lang],
-    showingBetween: translations.showingBetween[lang]
+    showingBetween: translations.showingBetween[lang],
+    notFound: translations.notFound[lang]
   }
 
   return (

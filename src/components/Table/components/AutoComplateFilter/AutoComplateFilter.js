@@ -2,9 +2,12 @@ import * as React from 'react'
 import { Autocomplete, TextField } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
+import { useTranslation } from "../../../../contexts/TranslationContext";
+
 function AutoComplateFilter(props) {
   const { options, value, onChange, label, ...rest } = props
   const theme = useTheme()
+  const { translation } = useTranslation();
 
   return (
     <Autocomplete
@@ -71,7 +74,7 @@ function AutoComplateFilter(props) {
           }}
         />
       )}
-      noOptionsText='Bulunamadı.'
+      noOptionsText={`${translation.notFound}`}
       {...rest}
     />
   )
