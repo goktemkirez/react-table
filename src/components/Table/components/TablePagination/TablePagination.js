@@ -99,7 +99,7 @@ function TablePagination({
   setPage,
   tableTitle
 }) {
-  const { translation } = useTranslation();
+  const { translation } = useTranslation()
   const [cookies, setCookie, removeCookie] = useCookies()
   const theme = useTheme()
   const upperMedium = useMediaQuery(theme.breakpoints.up('md'))
@@ -133,7 +133,15 @@ function TablePagination({
 
   return (
     <CustomTablePagination
-      rowsPerPageOptions={[5, 10, 15, 25, 50, { label: translation.all, value: -1 }]}
+      component='div'
+      rowsPerPageOptions={[
+        5,
+        10,
+        15,
+        25,
+        50,
+        { label: translation.all, value: -1 }
+      ]}
       colSpan={3}
       count={count}
       rowsPerPage={cookiePagination || rowsPerPage}
@@ -152,9 +160,9 @@ function TablePagination({
       ActionsComponent={TablePaginationActions}
       labelRowsPerPage=''
       labelDisplayedRows={({ from, to, count }) => {
-        return `${
-          count !== -1 ? count : `more than ${to}`
-        } ${translation.records}, ${from}–${to} ${translation.showingBetween}.`
+        return `${count !== -1 ? count : `more than ${to}`} ${
+          translation.records
+        }, ${from}–${to} ${translation.showingBetween}.`
       }}
       sx={
         upperMedium
